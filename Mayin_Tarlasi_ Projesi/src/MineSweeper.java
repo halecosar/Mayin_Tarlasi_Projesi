@@ -28,9 +28,9 @@ public class MineSweeper { //işlemlerin yapılacağı sınıf tanımlandı.
     //kullanıcıdan board boyutları alındı.
     public void CreateBoard() {
         Scanner input = new Scanner(System.in);
-        System.out.println("Board Boyutunun satır sınırını belirleyiniz : ");
+        System.out.println("Oyun alanının satır sınırını belirleyiniz : ");
         row = input.nextInt();
-        System.out.println("Board Boyutunun sütun sınırını belirleyiniz : ");
+        System.out.println("Oyun alanının sütun sınırını belirleyiniz : ");
         column = input.nextInt();
         // Kullanıcıdan alınan değerler ile dizi tanımlandı.
         originalArray = new String[row][column];
@@ -172,7 +172,7 @@ public class MineSweeper { //işlemlerin yapılacağı sınıf tanımlandı.
             }
 
             System.out.println("---------------------------------------------");
-            System.out.println(counter);
+
             originalArray[userSelectRow][userSelectColumn] = String.valueOf(counter);
             for (String[] a : originalArray) {
                 for (String b : a) {
