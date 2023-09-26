@@ -41,7 +41,7 @@ public class MineSweeper { //işlemlerin yapılacağı sınıf tanımlandı.
             }
         }
 
-        for (String[] a : originalArray) {
+       for (String[] a : originalArray) {
             for (String b : a) {
                 System.out.print(b);
             }
@@ -76,14 +76,15 @@ public class MineSweeper { //işlemlerin yapılacağı sınıf tanımlandı.
         }
 
         //bombalarının nereye yerleştiğini görmek istersek burayı çalıştırabiliriz.
-        /*
-        for (int[] a : bombedArray) {
+
+        /* for (int[] a : bombedArray) {
             for (int b : a) {
                 System.out.print(b);
             }
             System.out.println();
         } */
     }
+
     //Kullanıcıdan alınan satır ve sütun değerleri board sınırlarına uygun mu kontrol metodu tanımlandı.
     public boolean SetInput() {
         boolean resultRow = false;
@@ -91,12 +92,14 @@ public class MineSweeper { //işlemlerin yapılacağı sınıf tanımlandı.
         boolean resultColumn = false;
         while (resultRow != true) {
 
-            System.out.print("Satır Giriniz : ");
+            System.out.print("Lütfen 1 ile " + row + " arasında bir satır değeri giriniz : ");
             userSelectRow = input.nextInt();
+            userSelectRow = userSelectRow - 1;
+            // kullancı 0,0'dan değil 1,1'de başlatacağı için girdiği satır değeri 1 azaltıldı.
 
             if (userSelectRow >= row || userSelectRow < 0) {
                 resultRow = false;
-                System.out.print("Geçersiz satır değeri girdiniz.");
+                System.out.print("Geçersiz satır değeri girdiniz. ");
 
             } else {
                 resultRow = true;
@@ -105,12 +108,13 @@ public class MineSweeper { //işlemlerin yapılacağı sınıf tanımlandı.
 
 
         while (resultColumn != true) {
-            System.out.print("Sütun Giriniz : ");
+            System.out.print("Lütfen 1 ile " + column + " arasında bir sütun değeri giriniz  : ");
             userSelectColumn = input.nextInt();
-
+            // kullancı 0,0'dan değil 1,1'de başlatacağı için girdiği sütun değeri 1 azaltıldı.
+            userSelectColumn = userSelectColumn - 1;
             if (userSelectColumn >= column || userSelectColumn < 0) {
                 resultColumn = false;
-                System.out.print("Geçersiz sütun değeri girdiniz.");
+                System.out.print("Geçersiz sütun değeri girdiniz. ");
             } else {
                 resultColumn = true;
             }
@@ -120,13 +124,19 @@ public class MineSweeper { //işlemlerin yapılacağı sınıf tanımlandı.
 
         return true;
     }
+
     // Kullancının verdiği koordinatın sağ-sol-üst-alt ve çaprazlarında bomba var mı kontrolünü yapan metod tanımlandı.
     public boolean CheckBomb() {
         int counter = 0;
         if (bombedArray[userSelectRow][userSelectColumn] == 1) {
-            System.out.println("Mayına Bastınız, Game Over :( ===========================");
+            System.out.println("Mayına Bastınız, Game Over :( ");
             return true;
         } else {
+            if (originalArray[userSelectRow][userSelectColumn] != "*") {
+                System.out.println("Bu seçimi daha önce yaptınız, tekrar seçim yapınız. ");
+                return false;
+            }
+
             if (userSelectRow + 1 < row && bombedArray[userSelectRow + 1][userSelectColumn] == 1) {
                 counter++;
 
