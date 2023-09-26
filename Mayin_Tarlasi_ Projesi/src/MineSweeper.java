@@ -7,7 +7,8 @@ public class MineSweeper {
     int column;
     int x, y;
     String[][] myArray;
-
+    int mineCount;
+    int tempMineCount;
 
     //kullanıcıdan board boyutları alındı.
     public int[][] MineSweeperCreate() {
@@ -21,7 +22,7 @@ public class MineSweeper {
 
         for (int i = 0; i < myArray.length; i++) {
             for (int j = 0; j < myArray[i].length; j++) {
-                myArray[i][j] = "-";
+                myArray[i][j] = "*";
             }
         }
         for (String[] a : myArray) {
@@ -32,7 +33,8 @@ public class MineSweeper {
         }
 
         // Board içindeki bomba sayısı hesaplandı.
-        int mineCount = ((row * column) / 4);
+        mineCount = ((row * column) / 4);
+        tempMineCount = mineCount;
 
         int[][] myCounterArray = new int[row][column]; //// Bomba sayısını ve yerini tutacak ikinci bir dizi tanımlandı.
         //Değeri hesaplanan bombalar rastgele yerleştirildi.
@@ -45,12 +47,12 @@ public class MineSweeper {
         }
 
         Random rnd = new Random();
-        while (mineCount != 0) {
+        while (tempMineCount != 0) {
             int randomRow = rnd.nextInt(row);
             int randomColumn = rnd.nextInt(column);
             if (myCounterArray[randomRow][randomColumn] != 1) {
                 myCounterArray[randomRow][randomColumn] = 1;
-                mineCount--;
+                tempMineCount--;
             }
         }
 
@@ -95,43 +97,44 @@ public class MineSweeper {
         return true;
     }
 
-    public void checkMain(int[][] mainlar) {
+    public boolean checkMain(int[][] mainlar) {
         int sayac = 0;
         if (mainlar[x][y] == 1) {
             System.out.println("Game Over!! ===========================");
+            return true;
         } else {
             if (x + 1 < row && mainlar[x + 1][y] == 1) {
                 sayac++;
-                System.out.println("1 sağa kayma");
+
             }
             if (x - 1 >= 0 && mainlar[x - 1][y] == 1) {
                 sayac++;
-                System.out.println("1 sola kayma");
+
             }
             if (y + 1 < column && mainlar[x][y + 1] == 1) {
                 sayac++;
-                System.out.println("1 aşağı kayma");
+
 
             }
             if (y - 1 >= 0 && mainlar[x][y - 1] == 1) {
                 sayac++;
-                System.out.println("1 yukarı kayma");
+
             }
             if (x - 1 >= 0 && y - 1 >= 0 && mainlar[x - 1][y - 1] == 1) {
                 sayac++;
-                System.out.println("sol üst çapraza kayma");
+
             }
             if (x + 1 < row && y + 1 < column && mainlar[x + 1][y + 1] == 1) {
                 sayac++;
-                System.out.println("sağ  alt çapraza kayma");
+
             }
             if (x - 1 >= 0 && y + 1 < column && mainlar[x - 1][y + 1] == 1) {
                 sayac++;
-                System.out.println("sol alt çapraza kayma");
+
             }
             if (x + 1 < row && y - 1 >= 0 && mainlar[x + 1][y - 1] == 1) {
                 sayac++;
-                System.out.println("sağ üst çapraza kayma");
+
             }
 
             System.out.println("---------------------------------------------");
@@ -143,8 +146,25 @@ public class MineSweeper {
                 }
                 System.out.println();
             }
+            int tireCount = 0;
+            for (int i = 0; i < myArray.length; i++) {
+                for (int j = 0; j < myArray[i].length; j++) {
+                    if (myArray[i][j] == "*") {
+                        tireCount++;
+
+                    }
+                }
+            }
+
+            if (tireCount == mineCount) {
+                System.out.println("---------------------------------------------");
+                System.out.println("Oyunu Kazandınız !");
+                return true;
+            }
+
 
         }
+        return false;
     }
 }
 
