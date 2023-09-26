@@ -1,169 +1,195 @@
 import java.util.Random;
 import java.util.Scanner;
 
-public class MineSweeper {
+public class MineSweeper { //işlemlerin yapılacağı sınıf tanımlandı.
     Scanner input = new Scanner(System.in);
-    int row;
-    int column;
-    int x, y;
-    String[][] myArray;
-    int mineCount;
-    int tempMineCount;
+    int row; //kullanıcıdan alınacak board boyutunun satır değişkeni tanımlandı.
+    int column; //kullanıcıdan alınacak board boyutunun sütun değişkeni tanımlandı.
+    int userSelectRow, userSelectColumn; // kullanıcının oyun esnasında gireceği satır ve sütun değikenleri tanımlandı.
+    String[][] originalArray;
+    int[][] bombedArray;
+    int bombCount;
+    int tempbombCount;
+
+    public void UserInfo() {
+        Scanner scan = new Scanner(System.in);
+        String name;
+        String surname;
+        System.out.println("*****MAYIN*****TARLASI*****");
+        System.out.print("Lütfen isminizi giriniz : ");
+        name = scan.nextLine();
+        System.out.print("Lütfen soyisminizi giriniz : ");
+        surname = scan.nextLine();
+
+        System.out.println("Sayın " + name + " " + surname + " Mayın Tarlası Oyununa Hoşgeldiniz!");
+        System.out.println("================================");
+    }
 
     //kullanıcıdan board boyutları alındı.
-    public int[][] MineSweeperCreate() {
+    public void CreateBoard() {
         Scanner input = new Scanner(System.in);
         System.out.println("Board Boyutunun satır sınırını belirleyiniz : ");
         row = input.nextInt();
         System.out.println("Board Boyutunun sütun sınırını belirleyiniz : ");
         column = input.nextInt();
         // Kullanıcıdan alınan değerler ile dizi tanımlandı.
-        myArray = new String[row][column];
+        originalArray = new String[row][column];
 
-        for (int i = 0; i < myArray.length; i++) {
-            for (int j = 0; j < myArray[i].length; j++) {
-                myArray[i][j] = "*";
+        for (int i = 0; i < originalArray.length; i++) {
+            for (int j = 0; j < originalArray[i].length; j++) {
+                originalArray[i][j] = "*";
             }
         }
-        for (String[] a : myArray) {
+
+        for (String[] a : originalArray) {
             for (String b : a) {
                 System.out.print(b);
             }
             System.out.println();
         }
 
-        // Board içindeki bomba sayısı hesaplandı.
-        mineCount = ((row * column) / 4);
-        tempMineCount = mineCount;
+    }
 
-        int[][] myCounterArray = new int[row][column]; //// Bomba sayısını ve yerini tutacak ikinci bir dizi tanımlandı.
+    public void RandomBombCreater() {
+        // Board içindeki bomba sayısı hesaplandı.
+        bombCount = ((row * column) / 4);
+        tempbombCount = bombCount;
+
+        bombedArray = new int[row][column]; //// Bomba sayısını ve yerini tutacak ikinci bir dizi tanımlandı.
         //Değeri hesaplanan bombalar rastgele yerleştirildi.
         // Fakat bomba sayısı= elemansayisi/4 koşulunu sağlayabilmek için random değerin aynı olmaması gerekliliği sağlandı.
 
-        for (int i = 0; i < myCounterArray.length; i++) {
-            for (int j = 0; j < myCounterArray[i].length; j++) {
-                myCounterArray[i][j] = 0;
+        for (int i = 0; i < bombedArray.length; i++) {
+            for (int j = 0; j < bombedArray[i].length; j++) {
+                bombedArray[i][j] = 0;
             }
         }
 
         Random rnd = new Random();
-        while (tempMineCount != 0) {
+        while (tempbombCount != 0) {
             int randomRow = rnd.nextInt(row);
             int randomColumn = rnd.nextInt(column);
-            if (myCounterArray[randomRow][randomColumn] != 1) {
-                myCounterArray[randomRow][randomColumn] = 1;
-                tempMineCount--;
+            if (bombedArray[randomRow][randomColumn] != 1) {
+                bombedArray[randomRow][randomColumn] = 1;
+                tempbombCount--;
             }
         }
 
-        for (int[] a : myCounterArray) {
+        //bombalarının nereye yerleştiğini görmek istersek burayı çalıştırabiliriz.
+        /*
+        for (int[] a : bombedArray) {
             for (int b : a) {
                 System.out.print(b);
             }
             System.out.println();
-        }
-
-        return myCounterArray;
+        } */
     }
-
-    public boolean değerler() {
+    //Kullanıcıdan alınan satır ve sütun değerleri board sınırlarına uygun mu kontrol metodu tanımlandı.
+    public boolean SetInput() {
         boolean resultRow = false;
+
         boolean resultColumn = false;
         while (resultRow != true) {
 
             System.out.print("Satır Giriniz : ");
-            x = input.nextInt();
-            if (x > row || x < 0) {
+            userSelectRow = input.nextInt();
+
+            if (userSelectRow >= row || userSelectRow < 0) {
                 resultRow = false;
-                System.out.print("Geçersiz değer girildi.");
+                System.out.print("Geçersiz satır değeri girdiniz.");
 
             } else {
                 resultRow = true;
             }
         }
 
+
         while (resultColumn != true) {
             System.out.print("Sütun Giriniz : ");
-            y = input.nextInt();
-            if (y > column || y < 0) {
+            userSelectColumn = input.nextInt();
+
+            if (userSelectColumn >= column || userSelectColumn < 0) {
                 resultColumn = false;
-                System.out.print("Geçersiz değer girildi.");
+                System.out.print("Geçersiz sütun değeri girdiniz.");
             } else {
                 resultColumn = true;
             }
 
         }
 
+
         return true;
     }
-
-    public boolean checkMain(int[][] mainlar) {
-        int sayac = 0;
-        if (mainlar[x][y] == 1) {
-            System.out.println("Game Over!! ===========================");
+    // Kullancının verdiği koordinatın sağ-sol-üst-alt ve çaprazlarında bomba var mı kontrolünü yapan metod tanımlandı.
+    public boolean CheckBomb() {
+        int counter = 0;
+        if (bombedArray[userSelectRow][userSelectColumn] == 1) {
+            System.out.println("Mayına Bastınız, Game Over :( ===========================");
             return true;
         } else {
-            if (x + 1 < row && mainlar[x + 1][y] == 1) {
-                sayac++;
+            if (userSelectRow + 1 < row && bombedArray[userSelectRow + 1][userSelectColumn] == 1) {
+                counter++;
 
             }
-            if (x - 1 >= 0 && mainlar[x - 1][y] == 1) {
-                sayac++;
+            if (userSelectRow - 1 >= 0 && bombedArray[userSelectRow - 1][userSelectColumn] == 1) {
+                counter++;
 
             }
-            if (y + 1 < column && mainlar[x][y + 1] == 1) {
-                sayac++;
+            if (userSelectColumn + 1 < column && bombedArray[userSelectRow][userSelectColumn + 1] == 1) {
+                counter++;
 
 
             }
-            if (y - 1 >= 0 && mainlar[x][y - 1] == 1) {
-                sayac++;
+            if (userSelectColumn - 1 >= 0 && bombedArray[userSelectRow][userSelectColumn - 1] == 1) {
+                counter++;
 
             }
-            if (x - 1 >= 0 && y - 1 >= 0 && mainlar[x - 1][y - 1] == 1) {
-                sayac++;
+            if (userSelectRow - 1 >= 0 && userSelectColumn - 1 >= 0 && bombedArray[userSelectRow - 1][userSelectColumn - 1] == 1) {
+                counter++;
 
             }
-            if (x + 1 < row && y + 1 < column && mainlar[x + 1][y + 1] == 1) {
-                sayac++;
+            if (userSelectRow + 1 < row && userSelectColumn + 1 < column && bombedArray[userSelectRow + 1][userSelectColumn + 1] == 1) {
+                counter++;
 
             }
-            if (x - 1 >= 0 && y + 1 < column && mainlar[x - 1][y + 1] == 1) {
-                sayac++;
+            if (userSelectRow - 1 >= 0 && userSelectColumn + 1 < column && bombedArray[userSelectRow - 1][userSelectColumn + 1] == 1) {
+                counter++;
 
             }
-            if (x + 1 < row && y - 1 >= 0 && mainlar[x + 1][y - 1] == 1) {
-                sayac++;
+            if (userSelectRow + 1 < row && userSelectColumn - 1 >= 0 && bombedArray[userSelectRow + 1][userSelectColumn - 1] == 1) {
+                counter++;
 
             }
 
             System.out.println("---------------------------------------------");
-            System.out.println(sayac);
-            myArray[x][y] = String.valueOf(sayac);
-            for (String[] a : myArray) {
+            System.out.println(counter);
+            originalArray[userSelectRow][userSelectColumn] = String.valueOf(counter);
+            for (String[] a : originalArray) {
                 for (String b : a) {
                     System.out.print(b);
                 }
                 System.out.println();
             }
-            int tireCount = 0;
-            for (int i = 0; i < myArray.length; i++) {
-                for (int j = 0; j < myArray[i].length; j++) {
-                    if (myArray[i][j] == "*") {
-                        tireCount++;
+
+            int starCounter = 0;
+            for (int i = 0; i < originalArray.length; i++) {
+                for (int j = 0; j < originalArray[i].length; j++) {
+                    if (originalArray[i][j] == "*") {
+                        starCounter++;
 
                     }
                 }
             }
 
-            if (tireCount == mineCount) {
+            if (starCounter == bombCount) {
                 System.out.println("---------------------------------------------");
-                System.out.println("Oyunu Kazandınız !");
+                System.out.println("Tebrikler Oyunu Kazandınız !");
                 return true;
             }
 
 
         }
+
         return false;
     }
 }

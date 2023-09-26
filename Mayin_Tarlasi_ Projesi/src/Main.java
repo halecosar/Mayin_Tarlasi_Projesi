@@ -2,25 +2,20 @@ import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
-        Scanner scan = new Scanner(System.in);
-        String name;
-        String surname;
-        System.out.println("================================");
-        System.out.print("Lütfen isminizi giriniz : ");
-        name = scan.nextLine();
-        System.out.print("Lütfen soyisminizi giriniz : ");
-        surname = scan.nextLine();
-
-        System.out.println("Sayın " + name + " " + surname + " Mayın Tarlası Oyununa Hoşgeldiniz!");
-        System.out.println("================================");
-
-        MineSweeper deger = new MineSweeper();
-        int[][] mayinlar = deger.MineSweeperCreate();
         boolean state = false;
+        //kullanıcıdan bilgi alma metodu çağırıldı.
+        MineSweeper mineSweeper = new MineSweeper();
+        mineSweeper.UserInfo();
 
+        //bombaların oluşturulduğu ve kulanıcıdan alınan bilgilere göre board'u oluşturan metod çağırıldı.
+        mineSweeper.CreateBoard();
+
+        //bombaların tutulduğu diziyi çağıran meod tanımlandı.
+        mineSweeper.RandomBombCreater();
+        //oyunun kazanılma/kaybedilmesi için döngü yazıldı.
         while (state != true) {
-            deger.değerler();
-            state = deger.checkMain(mayinlar);
+            mineSweeper.SetInput();
+            state = mineSweeper.CheckBomb();
         }
 
 
