@@ -1,9 +1,10 @@
 # Mayin_Tarlasi_Projesi
 Patika Plus Java101 bitirme projesi.
 
- Java dilinde Mayın Tarlası oyunu yapmanızı bekliyoruz.
+ Java dilinde Mayın Tarlası oyunu yapıldı.
 
-Oyun Kuralları :
+Oyun Kuralları Patika Dev taafından verildi:
+
 Oyun metin tabanlıdır.
 Çift boyutlu diziler üzerinden oynanmalı ve MineSweeper sınıfı içerisinde tasarlanmalı.
 Matris boyutunu yani satır ve sütun sayısını kullanıcı belirlemeli.
