@@ -1,9 +1,9 @@
 import java.util.Random;
 import java.util.Scanner;
 
-public class MineSweeper { //işlemlerin yapılacağı sınıf tanımlandı.
+public class MineSweeper { // Değerlendirme Formu 5
     Scanner input = new Scanner(System.in);
-    int row; //kullanıcıdan alınacak board boyutunun satır değişkeni tanımlandı.
+    int row; // Değerlendirme Formu 1: kullanıcıdan alınacak board boyutunun satır değişkeni tanımlandı.
     int column; //kullanıcıdan alınacak board boyutunun sütun değişkeni tanımlandı.
     int userSelectRow, userSelectColumn; // kullanıcının oyun esnasında gireceği satır ve sütun değikenleri tanımlandı.
     String[][] originalArray;
@@ -11,7 +11,7 @@ public class MineSweeper { //işlemlerin yapılacağı sınıf tanımlandı.
     int bombCount;
     int tempbombCount;
 
-    public void UserInfo() {
+    public void UserInfo() { // Değerlendirme Formu 1 ve Değerlendirme Formu 6
         Scanner scan = new Scanner(System.in);
         String name;
         String surname;
@@ -26,14 +26,14 @@ public class MineSweeper { //işlemlerin yapılacağı sınıf tanımlandı.
     }
 
     //kullanıcıdan board boyutları alındı.
-    public void CreateBoard() {
+    public void CreateBoard() { // Değerlendirme Formu 1 ve  Değerlendirme Formu 6
         Scanner input = new Scanner(System.in);
         System.out.println("Oyun alanının satır sınırını belirleyiniz : ");
         row = input.nextInt();
         System.out.println("Oyun alanının sütun sınırını belirleyiniz : ");
         column = input.nextInt();
         // Kullanıcıdan alınan değerler ile dizi tanımlandı.
-        originalArray = new String[row][column];
+        originalArray = new String[row][column]; // Değerlendirme Formu 7
 
         for (int i = 0; i < originalArray.length; i++) {
             for (int j = 0; j < originalArray[i].length; j++) {
@@ -50,12 +50,13 @@ public class MineSweeper { //işlemlerin yapılacağı sınıf tanımlandı.
 
     }
 
-    public void RandomBombCreater() {
+    public void RandomBombCreater() {// Değerlendirme Formu 1 ve Değerlendirme Formu 6
         // Board içindeki bomba sayısı hesaplandı.
         bombCount = ((row * column) / 4);
-        tempbombCount = bombCount;
+        tempbombCount = bombCount; // Değerlendirme Formu 8
 
-        bombedArray = new int[row][column]; //// Bomba sayısını ve yerini tutacak ikinci bir dizi tanımlandı.
+        bombedArray = new int[row][column];
+        // Bomba sayısını ve yerini tutacak ikinci bir dizi tanımlandı.
         //Değeri hesaplanan bombalar rastgele yerleştirildi.
         // Fakat bomba sayısı= elemansayisi/4 koşulunu sağlayabilmek için random değerin aynı olmaması gerekliliği sağlandı.
 
@@ -65,7 +66,7 @@ public class MineSweeper { //işlemlerin yapılacağı sınıf tanımlandı.
             }
         }
 
-        Random rnd = new Random();
+        Random rnd = new Random(); // Değerlendirme Formu 1 ve Değerlendirme Formu 6
         while (tempbombCount != 0) {
             int randomRow = rnd.nextInt(row);
             int randomColumn = rnd.nextInt(column);
@@ -77,29 +78,29 @@ public class MineSweeper { //işlemlerin yapılacağı sınıf tanımlandı.
 
         //bombalarının nereye yerleştiğini görmek istersek burayı çalıştırabiliriz.
 
-        /* for (int[] a : bombedArray) {
+         for (int[] a : bombedArray) {
             for (int b : a) {
                 System.out.print(b);
             }
             System.out.println();
-        } */
+        }
     }
 
     //Kullanıcıdan alınan satır ve sütun değerleri board sınırlarına uygun mu kontrol metodu tanımlandı.
-    public boolean SetInput() {
+    public boolean SetInput() {// Değerlendirme Formu 1 ve Değerlendirme Formu 6
         boolean resultRow = false;
 
         boolean resultColumn = false;
         while (resultRow != true) {
 
-            System.out.print("Lütfen 1 ile " + row + " arasında bir satır değeri giriniz : ");
+            System.out.print("Lütfen 1 ile " + row + " arasında bir satır değeri giriniz : "); // Değerlendirme Formu 9
             userSelectRow = input.nextInt();
             userSelectRow = userSelectRow - 1;
             // kullancı 0,0'dan değil 1,1'de başlatacağı için girdiği satır değeri 1 azaltıldı.
 
             if (userSelectRow >= row || userSelectRow < 0) {
                 resultRow = false;
-                System.out.print("Geçersiz satır değeri girdiniz. ");
+                System.out.print("Geçersiz satır değeri girdiniz. "); // Değerlendirme Formu 10
 
             } else {
                 resultRow = true;
@@ -108,7 +109,7 @@ public class MineSweeper { //işlemlerin yapılacağı sınıf tanımlandı.
 
 
         while (resultColumn != true) {
-            System.out.print("Lütfen 1 ile " + column + " arasında bir sütun değeri giriniz  : ");
+            System.out.print("Lütfen 1 ile " + column + " arasında bir sütun değeri giriniz  : "); // Değerlendirme Formu 9
             userSelectColumn = input.nextInt();
             // kullancı 0,0'dan değil 1,1'de başlatacağı için girdiği sütun değeri 1 azaltıldı.
             userSelectColumn = userSelectColumn - 1;
@@ -126,10 +127,10 @@ public class MineSweeper { //işlemlerin yapılacağı sınıf tanımlandı.
     }
 
     // Kullancının verdiği koordinatın sağ-sol-üst-alt ve çaprazlarında bomba var mı kontrolünü yapan metod tanımlandı.
-    public boolean CheckBomb() {
+    public boolean CheckBomb() {// Değerlendirme Formu 1 ve Değerlendirme Formu 6
         int counter = 0;
         if (bombedArray[userSelectRow][userSelectColumn] == 1) {
-            System.out.println("Mayına Bastınız, Game Over :( ");
+            System.out.println("Mayına Bastınız, Game Over :( "); // Değerlendirme Formu 15
             return true;
         } else {
             if (originalArray[userSelectRow][userSelectColumn] != "*") {
@@ -193,7 +194,7 @@ public class MineSweeper { //işlemlerin yapılacağı sınıf tanımlandı.
 
             if (starCounter == bombCount) {
                 System.out.println("---------------------------------------------");
-                System.out.println("Tebrikler Oyunu Kazandınız !");
+                System.out.println("Tebrikler Oyunu Kazandınız !"); // Değerlendirme Formu 15
                 return true;
             }
 
