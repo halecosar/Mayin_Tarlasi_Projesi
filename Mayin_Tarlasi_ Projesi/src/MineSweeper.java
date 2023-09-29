@@ -129,6 +129,7 @@ public class MineSweeper { // Değerlendirme Formu 5
     // Kullancının verdiği koordinatın sağ-sol-üst-alt ve çaprazlarında bomba var mı kontrolünü yapan metod tanımlandı.
     public boolean CheckBomb() {// Değerlendirme Formu 1 ve Değerlendirme Formu 6
         int counter = 0;
+        // Değerlendirme formu 13
         if (bombedArray[userSelectRow][userSelectColumn] == 1) {
             System.out.println("Mayına Bastınız, Game Over :( "); // Değerlendirme Formu 15
             return true;
@@ -174,6 +175,8 @@ public class MineSweeper { // Değerlendirme Formu 5
 
             System.out.println("---------------------------------------------");
 
+            // Değerlendirme formu 11-Oyun alanı güncellendi.
+            // Değerlendire formu 12
             originalArray[userSelectRow][userSelectColumn] = String.valueOf(counter);
             for (String[] a : originalArray) {
                 for (String b : a) {
@@ -194,7 +197,7 @@ public class MineSweeper { // Değerlendirme Formu 5
 
             if (starCounter == bombCount) {
                 System.out.println("---------------------------------------------");
-                System.out.println("Tebrikler Oyunu Kazandınız !"); // Değerlendirme Formu 15
+                System.out.println("Tebrikler Oyunu Kazandınız !"); // Değerlendirme Formu 14 ve Değerlendirme Formu 15
                 return true;
             }
 
